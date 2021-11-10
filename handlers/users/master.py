@@ -1,5 +1,5 @@
 from aiogram.dispatcher import FSMContext
-from aiogram.types import Message, ReplyKeyboardRemove
+from aiogram.types import Message
 import time
 
 from keyboards.default.master_panel import returns_back
@@ -7,14 +7,6 @@ from keyboards.inline.master_panel import admin_menu, reject
 from states.Master import admin_panel
 from aiogram.types import CallbackQuery
 from loader import dp, Database as db
-
-
-# Registers new users
-@dp.message_handler(text_contains="Password 🔐", state=admin_panel.register)
-async def registration(message: Message, state: FSMContext):
-    await message.delete()
-    await message.answer("<b>Enter the password below: </b>", reply_markup=ReplyKeyboardRemove(True))
-    await admin_panel.secret_key.set()
 
 
 # Checks the incoming messages and compares
@@ -25,7 +17,8 @@ async def password(message: Message, state: FSMContext):
     await message.delete()
     if secret_key == pass_key:
         photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
-        await message.answer_photo(photo_url, caption='The master mode has been activated ✅: '
+        await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
+                                                      f'<b>Master ID : {message.from_user.id}</b>'
                                                       '\n     \n'
                                                       '<i>❗️We highly recommend to set your profile first '
                                                       'if you have not done it yet, because customers can get in '
@@ -35,13 +28,13 @@ async def password(message: Message, state: FSMContext):
             "insert into masters(admin_id) values(%s)",
             message.from_user.id
                 )
-        await admin_panel.reservations.set()
+        await admin_panel.mainmenu.set()
     else:
         await message.answer('<i>❌ Invalid password,try again</i>')
 
 
 # Shows list of reservations
-@dp.callback_query_handler(text="clients", state=admin_panel.reservations)
+@dp.callback_query_handler(text="clients", state=admin_panel.mainmenu)
 async def show_customer(call: CallbackQuery, state: FSMContext):
     await call.message.delete()
     await call.message.answer("List of recent customers: ", reply_markup=returns_back)
@@ -65,7 +58,7 @@ async def show_customer(call: CallbackQuery, state: FSMContext):
 
 
 # Rejects the reservation of a customer and notifies the rejection back
-@dp.callback_query_handler(text_contains='reject', state=admin_panel.reservations)
+@dp.callback_query_handler(text_contains='reject', state=admin_panel.mainmenu)
 async def reject_customer(call: CallbackQuery, state: FSMContext):
     customer_id = call.data.split('#')[1]
 
@@ -81,8 +74,14 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
         await call.message.answer(f"Can't notify the {customer_id} id user")
 
 
-@dp.message_handler(text='🔙 Back', state=admin_panel.reservations)
+@dp.message_handler(text='🔙 Back', state=admin_panel.mainmenu)
 async def returns(message: Message, state: FSMContext):
     await message.delete()
     photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
-    await message.answer_photo(photo_url, caption='The master mode has been activated ✅: ', reply_markup=admin_menu)
+    await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
+                                                  f'<b>Master ID : {message.from_user.id}</b>'
+                                                  '\n     \n'
+                                                  '<i>❗️We highly recommend to set your profile first '
+                                                  'if you have not done it yet, because customers can get in '
+                                                  'touch with you directly looking at your profile.</i>',
+                               reply_markup=admin_menu)

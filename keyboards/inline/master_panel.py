@@ -17,6 +17,9 @@ admin_menu = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text='Feedbacks 💬', callback_data='feedback'),
         ],
+        [
+            InlineKeyboardButton(text='Delete Account 🗑', callback_data='delete')
+        ]
     ]
 )
 
@@ -39,3 +42,4 @@ def reject(customer_id):
         ]
     )
     return keyboard
+

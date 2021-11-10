@@ -111,13 +111,15 @@ class MySQLStorage:
 
     async def delete_customer(self, user_id):
         await self.apply("delete from customers where user_id = %s", user_id)
+# master database
 
     async def all_masters(self):
         masters = await self.get('select * from masters', fetch_all=True)
         return masters
 
     async def check_user(self, admin_id):
-        check_user = bool(await self.check("select admin_id from masters where id = %s", admin_id))
+        check_user = bool(await self.check("select admin_id from masters where admin_id = %s", admin_id))
         return check_user
 
-
+    async def delete_account(self, admin_id):
+        await self.apply('delete from masters where admin_id = %s', admin_id)
