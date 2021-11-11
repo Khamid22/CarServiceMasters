@@ -7,7 +7,7 @@ from keyboards.inline.newuser import submit
 from states.Master import admin_panel
 from states.new_user import new_User
 from aiogram.types import CallbackQuery
-from loader import dp, Database as db, bot
+from loader import dp, Database as db
 
 
 @dp.callback_query_handler(text="register", state=admin_panel.register)
@@ -25,7 +25,6 @@ async def set_profile(call: CallbackQuery, state: FSMContext):
                               f'<b>🚸 Step 1</b> of 5\n  \n'
                               f'<i>😊 Write your name here: </i>\n  \n'
                               f'<i>✍🏻 Example: Khamidullo</>',reply_markup=get_back)
-    await bot.edit_message_text()
     await new_User.full_name.set()
 
 
