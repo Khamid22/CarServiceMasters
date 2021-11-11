@@ -21,7 +21,7 @@ async def set_profile(call: CallbackQuery, state: FSMContext):
     data = await db.master_data(admin_id=call.from_user.id)
     name = data.get('full_name')
     phone = data.get('phone_number')
-    experience = data.get('Work _Experience')
+    experience = data.get('Work_Experience')
     service = data.get('ServiceName')
     admin_id = data.get('admin_id')
 
