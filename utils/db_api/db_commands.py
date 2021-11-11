@@ -126,7 +126,7 @@ class MySQLStorage:
         await self.apply('delete from masters where admin_id = %s', admin_id)
 
     async def master_data(self, admin_id):
-        master_data = await self.apply('select * from masters where admin_id = ?', admin_id)
+        master_data = await self.get('select * from masters where admin_id = ?', admin_id)
         return master_data
 
     async def update_profile(self, full_name, phone_number, Work_Experience, ServiceName, admin_id):
