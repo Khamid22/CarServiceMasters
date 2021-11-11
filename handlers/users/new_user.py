@@ -139,7 +139,7 @@ async def submit_the_info(call: CallbackQuery, state: FSMContext):
     phone = data.get("number")
     experience = data.get("Work-experience")
     service = data.get("CarService")
-    admin_id = call.message.from_user.id
+    admin_id = call.from_user.id
     await db.update_profile(name, phone, experience, service, admin_id)
     await call.message.answer(f"<b>↪️ MY Profile↩️</b>"
                               f"\n  \n"
