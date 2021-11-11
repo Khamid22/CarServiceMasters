@@ -111,7 +111,8 @@ class MySQLStorage:
 
     async def delete_customer(self, user_id):
         await self.apply("delete from customers where user_id = %s", user_id)
-# master database
+
+    # master database
 
     async def all_masters(self):
         masters = await self.get('select * from masters', fetch_all=True)
@@ -123,3 +124,12 @@ class MySQLStorage:
 
     async def delete_account(self, admin_id):
         await self.apply('delete from masters where admin_id = %s', admin_id)
+
+    async def master_data(self, admin_id):
+        master_data = await self.apply('select * from masters where admin_id = %s', admin_id)
+        return master_data
+
+    async def update_profile(self, full_name, phone_number, Work_Experience, ServiceName, admin_id):
+        update_prof = await self.apply(f"update masters set full_name='{full_name}', phone_number='{phone_number}',"
+                                 f"Work_Experience='{Work_Experience}', ServiceName='{ServiceName}',where admin_id = %s", admin_id)
+        return update_prof

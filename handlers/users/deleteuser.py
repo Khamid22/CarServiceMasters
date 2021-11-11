@@ -22,6 +22,7 @@ async def delete_account(call: CallbackQuery, state: FSMContext):
 @dp.callback_query_handler(text='yes', state=admin_panel.delete)
 async def confirm(call: CallbackQuery, state: FSMContext):
     master_id = call.from_user.id
+    await call.message.delete()
     await db.delete_account(master_id)
     await call.message.answer("Your account has been deleted, thank you for your collaboration.")
     await call.answer(cache_time=60)

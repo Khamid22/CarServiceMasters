@@ -32,3 +32,13 @@ cancel = InlineKeyboardMarkup(
         ]
     ]
 )
+
+
+submit = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Submit ✅", callback_data="submit"),
+            InlineKeyboardButton(text="Cancel ❌", callback_data="cancel"),
+        ]
+    ]
+)
