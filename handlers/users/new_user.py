@@ -25,17 +25,18 @@ async def set_profile(call: CallbackQuery, state: FSMContext):
                               f'<b>🚸 Step 1</b> of 5\n  \n'
                               f'<i>😊 Write your name here: </i>\n  \n'
                               f'<i>✍🏻 Example: Khamidullo</>',reply_markup=get_back)
+    await bot.edit_message_text()
     await new_User.full_name.set()
 
 
-@dp.message_handler(text='name',state=new_User.full_name)
-async def full_name(message: Message, state: FSMContext):
-    name = message.text
+@dp.callback_query_handler(text='name', state=new_User.full_name)
+async def full_name(call: CallbackQuery, state: FSMContext):
+    name = call.message.text
     await state.update_data(
         {"name": name}
     )
-    await message.delete()
-    await message.answer(f'<b>🚸 Step 2</b> of 5\n  \n'
+    await call.message.delete()
+    await call.message.answer(f'<b>🚸 Step 2</b> of 5\n  \n'
                               f'<i>😊 Write your phone number here: </i>\n  \n'
                               f'<i>✍🏻 Example: +998(xx)-xxx-xx-xx</i>', reply_markup=get_back)
     await new_User.phone_number.set()
