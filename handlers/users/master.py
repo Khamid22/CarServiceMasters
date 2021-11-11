@@ -6,7 +6,7 @@ from keyboards.default.master_panel import returns_back
 from keyboards.inline.master_panel import admin_menu, reject
 from states.Master import admin_panel
 from aiogram.types import CallbackQuery
-from loader import dp, Database as db
+from loader import dp, Database as db, bot
 
 
 # Checks the incoming messages and compares
@@ -16,6 +16,9 @@ async def password(message: Message, state: FSMContext):
     pass_key = "master007"
     await message.delete()
     if secret_key == pass_key:
+        chat_id = message.chat.id
+        message_id = message.message_id - 1
+        await bot.delete_message(chat_id=chat_id, message_id=message_id)
         photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
         await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                       f'<b>Master ID : {message.from_user.id}</b>'
@@ -76,7 +79,9 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
 
 @dp.message_handler(text='🔙 Back', state=admin_panel.mainmenu)
 async def returns(message: Message, state: FSMContext):
-    await message.delete()
+    chat_id = message.chat.id
+    message_id = message.message_id - 1
+    await bot.delete_message(chat_id=chat_id, message_id=message_id)
     photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
     await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                   f'<b>Master ID : {message.from_user.id}</b>'
@@ -85,3 +90,4 @@ async def returns(message: Message, state: FSMContext):
                                                   'if you have not done it yet, because customers can get in '
                                                   'touch with you directly looking at your profile.</i>',
                                reply_markup=admin_menu)
+    await message.delete()

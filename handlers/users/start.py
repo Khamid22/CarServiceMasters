@@ -6,14 +6,14 @@ from data.config import ADMINS
 from keyboards.inline.newuser import register
 from keyboards.inline.master_panel import admin_menu
 from states.Master import admin_panel
-from loader import dp, Database as db
+from loader import dp, Database as db, bot
 
 
 # Asks the password for master's panel
 @dp.message_handler(CommandStart(), state='*')
 async def master(message: Message, state: FSMContext):
-    admin = await dp.bot.get_chat(ADMINS[0])
     await message.delete()
+    admin = await dp.bot.get_chat(ADMINS[0])
     is_master = await db.check_user(message.from_user.id)
     if not is_master:
         await message.answer(f"<b> 🚫 You are not fully registered yet!</b>\n"

@@ -129,7 +129,13 @@ class MySQLStorage:
         master_data = await self.apply('select * from masters where admin_id = %s', admin_id)
         return master_data
 
+    async def get_mydata(self,  admin_id):
+        user_data = await self.get("select * from `masters` where admin_id = %s", admin_id)
+        return user_data
+
     async def update_profile(self, full_name, phone_number, Work_Experience, ServiceName, admin_id):
         update_prof = await self.apply(f"update masters set full_name='{full_name}', phone_number='{phone_number}',"
-                                 f"Work_Experience='{Work_Experience}', ServiceName='{ServiceName}',where admin_id = %s", admin_id)
+                                       f"Work_Experience='{Work_Experience}', ServiceName='{ServiceName}' "
+                                       f"where admin_id = %s",
+                                       admin_id)
         return update_prof
