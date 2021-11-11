@@ -18,21 +18,22 @@ async def registration(call: CallbackQuery, state: FSMContext):
 # Master's profile settings
 @dp.callback_query_handler(text='profile', state=admin_panel.mainmenu)
 async def set_profile(call: CallbackQuery, state: FSMContext):
-    data = await db.get_mydata(admin_id=call.from_user.id)
-    for profile in data:
-        name = profile.get('name')
-        phone = profile.get('number')
-        experience = profile.get('Work-experience')
-        service = profile.get('CarService')
-        admin_id = profile.get('admin_id')
-        msg = f"<b>↪️ MY Profile↩️</b>  "
-        msg += f"\n  \n"
-        msg += f"Name : {name}\n"
-        msg += f"Phone : {phone}\n"
-        msg += f"Experience : {experience}\n"
-        msg += f"Service : {service}\n"
-        msg += f"Master ID: {admin_id}"
-        await call.message.answer(msg, reply_markup=update)
+    data = await db.master_data(admin_id=call.from_user.id)
+    name = data.get('name')
+    phone = data.get('number')
+    experience = data.get('Work-experience')
+    service = data.get('CarService')
+    admin_id = data.get('admin_id')
+
+    msg = f"<b>↪️ MY Profile↩️</b>  "
+    msg += f"\n  \n"
+    msg += f"Name : {name}\n"
+    msg += f"Phone : {phone}\n"
+    msg += f"Experience : {experience}\n"
+    msg += f"Service : {service}\n"
+    msg += f"Master ID: {admin_id}"
+
+    await call.message.answer(msg, reply_markup=update)
     await new_User.update.set()
 
 
