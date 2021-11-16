@@ -7,4 +7,5 @@ class new_User(StatesGroup):
     phone_number = State()
     Work_Experience = State()
     ServiceName = State()
+    Location = State()
     Confirm = State()

@@ -15,7 +15,7 @@ admin_menu = InlineKeyboardMarkup(
             InlineKeyboardButton(text="My Profile 👤", callback_data='profile')
         ],
         [
-            InlineKeyboardButton(text='Feedbacks 💬', callback_data='feedback'),
+            InlineKeyboardButton(text='Feedbacks 💬', url="https://t.me/CarServiceFeedbacks"),
         ],
         [
             InlineKeyboardButton(text='Delete Account 🗑', callback_data='delete')

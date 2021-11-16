@@ -12,7 +12,15 @@ from loader import dp, Database as db, bot
 # Asks the password for master's panel
 @dp.message_handler(CommandStart(), state='*')
 async def master(message: Message, state: FSMContext):
-    await message.delete()
+    try:
+        await message.delete()
+        chat_id = message.chat.id
+        message_id = message.message_id
+        for i in range(message_id - 1, 100, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
+    except:
+        pass
+
     admin = await dp.bot.get_chat(ADMINS[0])
     is_master = await db.check_user(message.from_user.id)
     if not is_master:

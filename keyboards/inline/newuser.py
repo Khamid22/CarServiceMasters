@@ -33,7 +33,7 @@ update = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Update 🔄", callback_data='update'),
         ],
         [
-            InlineKeyboardButton(text="Back 🔙", callback_data='cancel'),
+            InlineKeyboardButton(text="Back 🔙", callback_data='return'),
         ]
 
     ]

@@ -16,9 +16,14 @@ async def password(message: Message, state: FSMContext):
     pass_key = "master007"
     await message.delete()
     if secret_key == pass_key:
-        chat_id = message.chat.id
-        message_id = message.message_id - 1
-        await bot.delete_message(chat_id=chat_id, message_id=message_id)
+        try:
+            await message.delete()
+            chat_id = message.chat.id
+            message_id = message.message_id
+            for i in range(message_id - 1, 100, -1):
+                await bot.delete_message(chat_id=chat_id, message_id=i)
+        except:
+            pass
         photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
         await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                       f'<b>Master ID : {message.from_user.id}</b>'
@@ -39,7 +44,15 @@ async def password(message: Message, state: FSMContext):
 # Shows list of reservations
 @dp.callback_query_handler(text="clients", state=admin_panel.mainmenu)
 async def show_customer(call: CallbackQuery, state: FSMContext):
-    await call.message.delete()
+    try:
+        await call.message.delete()
+        chat_id = call.message.chat.id
+        message_id = call.message.message_id
+        for i in range(message_id - 1, 100, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
+    except:
+        pass
+
     await call.message.answer("List of recent customers: ", reply_markup=returns_back)
     customers = await db.all_customers()
     for customer in customers:
@@ -65,7 +78,14 @@ async def show_customer(call: CallbackQuery, state: FSMContext):
 async def reject_customer(call: CallbackQuery, state: FSMContext):
     customer_id = call.data.split('#')[1]
 
-    await call.message.delete()
+    try:
+        await call.message.delete()
+        chat_id = call.message.chat.id
+        message_id = call.message.message_id
+        for i in range(message_id - 1, 100, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
+    except:
+        pass
     await db.delete_customer(customer_id)
     await call.answer("Customer rejected successfully", cache_time=60, show_alert=True)
     try:
@@ -73,15 +93,19 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
                                                             "some mistakes, please provide more accurate data ‼️")
 
     except:
-
         await call.message.answer(f"Can't notify the {customer_id} id user")
 
 
 @dp.message_handler(text='🔙 Back', state=admin_panel.mainmenu)
 async def returns(message: Message, state: FSMContext):
-    chat_id = message.chat.id
-    message_id = message.message_id - 1
-    await bot.delete_message(chat_id=chat_id, message_id=message_id)
+    try:
+        await message.delete()
+        chat_id = message.chat.id
+        message_id = message.message_id
+        for i in range(message_id - 1, 100, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
+    except:
+        pass
     photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
     await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                   f'<b>Master ID : {message.from_user.id}</b>'
@@ -90,4 +114,3 @@ async def returns(message: Message, state: FSMContext):
                                                   'if you have not done it yet, because customers can get in '
                                                   'touch with you directly looking at your profile.</i>',
                                reply_markup=admin_menu)
-    await message.delete()
