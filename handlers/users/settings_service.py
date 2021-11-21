@@ -11,6 +11,7 @@ photo_url = "https://i.pinimg.com/originals/e9/55/b8/e955b8bf79636c2f6ac0ff2d0bf
 async def list_of_services(call: CallbackQuery, state: FSMContext):
     try:
         await call.message.delete()
+        await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     except:
         pass
     msg = "List of available services:"
@@ -22,6 +23,7 @@ async def list_of_services(call: CallbackQuery, state: FSMContext):
 async def setting_service(call: CallbackQuery, state: FSMContext):
     try:
         await call.message.delete()
+        await bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.message_id)
     except:
         pass
     service_id = call.data.replace('setting_service', '')
@@ -34,11 +36,14 @@ async def setting_service(call: CallbackQuery, state: FSMContext):
 @dp.message_handler(content_types='text', state=Settings.service_panel)
 async def new_settings(message: Message, state: FSMContext):
     try:
+        await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        await bot.delete_message(chat_id, message_id)
+        for i in range(message_id - 1, 2, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
+
     new_name = message.text
     async with state.proxy() as data:
         service_id = data['service_id']
@@ -48,14 +53,23 @@ async def new_settings(message: Message, state: FSMContext):
     await message.answer(msg, reply_markup=keyboard)
 
 
-@dp.callback_query_handler(text="🔙Back", state="*")
-async def get_back(call: CallbackQuery):
+@dp.callback_query_handler(text="back*", state="*")
+async def return_back(call: CallbackQuery):
     try:
+        await call.message.delete()
         chat_id = call.message.chat.id
         message_id = call.message.message_id
-        await bot.delete_message(chat_id, message_id)
+        for i in range(message_id - 1, 2, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
+    await call.message.answer_photo(photo_url, caption="Bot settings", reply_markup=settings)
+    await Settings.setting_panel.set()
+
+
+@dp.callback_query_handler(text="🔙Back", state="*")
+async def get_back(call: CallbackQuery):
+    await call.message.delete()
     msg = "List of available services:"
     keyboard = await services_keyboard()
     await call.message.answer(msg, reply_markup=keyboard)
