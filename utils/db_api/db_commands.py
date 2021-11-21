@@ -8,6 +8,10 @@ from aiomysql import Pool, create_pool
 from aiomysql.cursors import DictCursor
 
 
+async def list_of_date_time():
+    list_of_date_time()
+
+
 class MySQLStorage:
     def __init__(self, database: str, host: str = 'localhost', port: int = 3306, user: str = 'root',
                  password: Optional[str] = None, create_pool: bool = True):
@@ -136,3 +140,11 @@ class MySQLStorage:
     async def list_of_services(self):
         list_of_service = await self.get('select * from services', fetch_all=True)
         return list_of_service
+
+    async def list_of_cars(self):
+        list_of_cars = await self.get('select * from cars', fetch_all=True)
+        return list_of_cars
+
+    async def list_of_days(self):
+        list_of_days = await self.get('select * from date', fetch_all=True)
+        return list_of_days

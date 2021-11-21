@@ -5,4 +5,7 @@ from . import new_user
 from . import deleteuser
 from . import Settings
 from . import settings_service
+from . import settings_masters
+from . import settings_car
+from . import settings_date
 from . import echo
