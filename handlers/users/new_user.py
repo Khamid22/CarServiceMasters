@@ -10,15 +10,8 @@ from loader import dp, Database as db, bot
 
 @dp.callback_query_handler(text="register", state=admin_panel.register)
 async def registration(call: CallbackQuery, state: FSMContext):
+    await call.message.delete()
     await call.message.answer("<b>Enter the password below: </b>")
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
     await admin_panel.secret_key.set()
 
 

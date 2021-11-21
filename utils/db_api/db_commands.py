@@ -133,3 +133,6 @@ class MySQLStorage:
         await self.apply("""update `masters` set full_name=%s, phone_number=%s, Work_Experience=%s, ServiceName=%s,
         Location=%s where admin_id = %s""", (full_name, phone_number, Work_Experience, ServiceName, Location, admin_id))
 
+    async def list_of_services(self):
+        list_of_service = await self.get('select * from services', fetch_all=True)
+        return list_of_service

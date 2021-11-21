@@ -14,16 +14,15 @@ from loader import dp, Database as db, bot
 async def password(message: Message, state: FSMContext):
     secret_key = message.text
     pass_key = "master007"
-    await message.delete()
+    try:
+        await message.delete()
+        chat_id = message.chat.id
+        message_id = message.message_id
+        for i in range(message_id - 1, 100, -1):
+            await bot.delete_message(chat_id=chat_id, message_id=i)
+    except:
+        pass
     if secret_key == pass_key:
-        try:
-            await message.delete()
-            chat_id = message.chat.id
-            message_id = message.message_id
-            for i in range(message_id - 1, 100, -1):
-                await bot.delete_message(chat_id=chat_id, message_id=i)
-        except:
-            pass
         photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
         await message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                       f'<b>Master ID : {message.from_user.id}</b>'
@@ -35,7 +34,7 @@ async def password(message: Message, state: FSMContext):
         await db.apply(
             "insert into masters(admin_id) values(%s)",
             message.from_user.id
-                )
+        )
         await admin_panel.mainmenu.set()
     else:
         await message.answer('<i>❌ Invalid password,try again</i>')
@@ -78,22 +77,18 @@ async def show_customer(call: CallbackQuery, state: FSMContext):
 async def reject_customer(call: CallbackQuery, state: FSMContext):
     customer_id = call.data.split('#')[1]
 
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
+    await call.message.edit_text("Customer rejected successfully")
     await db.delete_customer(customer_id)
-    await call.answer("Customer rejected successfully", cache_time=60, show_alert=True)
-    try:
-        await dp.bot.send_message(chat_id=customer_id, text="Apparently, your reservation has been rejected due to "
-                                                            "some mistakes, please provide more accurate data ‼️")
 
-    except:
-        await call.message.answer(f"Can't notify the {customer_id} id user")
+
+@dp.callback_query_handler(text_contains='accept', state=admin_panel.mainmenu)
+async def reject_customer(call: CallbackQuery, state: FSMContext):
+    customer_id = call.data.split('#')[1]
+    row = await db.get("select * from masters where admin_id=%s", customer_id)
+    admin_name = row.get("full_name")
+    await dp.bot.send_message(customer_id, f"You successful accepted by {admin_name}")
+    await call.message.edit_text(f"[{customer_id}] Customer accepted successfully")
+    await db.delete_customer(customer_id)
 
 
 @dp.message_handler(text='🔙 Back', state=admin_panel.mainmenu)
