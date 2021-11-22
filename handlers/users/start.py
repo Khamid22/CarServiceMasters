@@ -16,14 +16,18 @@ async def master(message: Message, state: FSMContext):
         await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        for i in range(message_id - 1, 100, -1):
+        for i in range(message_id - 1, 3, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
 
     admin = await dp.bot.get_chat(ADMINS[0])
     is_master = await db.check_user(message.from_user.id)
-    if not is_master:
+    is_banned = await db.check_account(message.from_user.id)
+    if is_banned:
+        await message.answer(f"Sorry your account has been banned")
+        await state.finish()
+    elif not is_master:
         await message.answer(f"<b> 🚫 You are not fully registered yet!</b>\n"
                              f"    \n"
                              f"<i>❗️Please for registration, send my your password "

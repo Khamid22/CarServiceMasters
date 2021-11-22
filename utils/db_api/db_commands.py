@@ -117,7 +117,6 @@ class MySQLStorage:
         await self.apply("delete from customers where user_id = %s", user_id)
 
     # master database
-
     async def all_masters(self):
         masters = await self.get('select * from masters', fetch_all=True)
         return masters
@@ -137,6 +136,7 @@ class MySQLStorage:
         await self.apply("""update `masters` set full_name=%s, phone_number=%s, Work_Experience=%s, ServiceName=%s,
         Location=%s where admin_id = %s""", (full_name, phone_number, Work_Experience, ServiceName, Location, admin_id))
 
+    # Settings database
     async def list_of_services(self):
         list_of_service = await self.get('select * from services', fetch_all=True)
         return list_of_service
@@ -148,3 +148,14 @@ class MySQLStorage:
     async def list_of_days(self):
         list_of_days = await self.get('select * from date', fetch_all=True)
         return list_of_days
+
+    async def check_account(self, master_id):
+        check_user = bool(await self.check("select master_id from black_list where admin_id = %s", master_id))
+        return check_user
+
+    async def black_list(self):
+        masters = await self.get('select * from black_list', fetch_all=True)
+        return masters
+
+    async def user_unblock(self, master_id):
+        await self.apply('delete from black_list where master_id = %s', master_id)

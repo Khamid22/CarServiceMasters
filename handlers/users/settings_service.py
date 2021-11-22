@@ -55,7 +55,7 @@ async def return_back(call: CallbackQuery):
         await call.message.delete()
         chat_id = call.message.chat.id
         message_id = call.message.message_id
-        for i in range(message_id - 1, 2, -1):
+        for i in range(message_id - 1, 3, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass

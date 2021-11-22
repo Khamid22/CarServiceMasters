@@ -18,14 +18,7 @@ async def registration(call: CallbackQuery, state: FSMContext):
 # Master's profile settings
 @dp.callback_query_handler(text='profile', state=admin_panel.mainmenu)
 async def set_profile(call: CallbackQuery, state: FSMContext):
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
+    await call.message.delete()
 
     data = await db.master_data(admin_id=call.from_user.id)
     name = data.get('full_name') or " Not filled"
@@ -49,15 +42,7 @@ async def set_profile(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='update', state=new_User.update)
 async def update_pro(call: CallbackQuery, state: FSMContext):
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
-
+    await call.message.delete()
     await call.message.answer(f'<b>👨🏻‍🔧 Welcome,{call.from_user.full_name}</b>\n  \n'
                               f'<b>🚸 Step 1</b> of 5\n  \n'
                               f'<i>😊 Write your name here: </i>\n  \n'
@@ -71,7 +56,7 @@ async def full_name(message: Message, state: FSMContext):
         await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        for i in range(message_id - 1, 100, -1):
+        for i in range(message_id - 1, 2, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
@@ -92,7 +77,7 @@ async def phone_number(message: Message, state: FSMContext):
             await message.delete()
             chat_id = message.chat.id
             message_id = message.message_id
-            for i in range(message_id - 1, 100, -1):
+            for i in range(message_id - 1, 2, -1):
                 await bot.delete_message(chat_id=chat_id, message_id=i)
         except:
             pass
@@ -117,7 +102,7 @@ async def experience(message: Message, state: FSMContext):
         await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        for i in range(message_id - 1, 100, -1):
+        for i in range(message_id - 1, 2, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
@@ -136,7 +121,7 @@ async def service_name(message: Message, state: FSMContext):
         await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        for i in range(message_id - 1, 100, -1):
+        for i in range(message_id - 1, 2, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
@@ -156,7 +141,7 @@ async def adress(message: Message, state: FSMContext):
         await message.delete()
         chat_id = message.chat.id
         message_id = message.message_id
-        for i in range(message_id - 1, 100, -1):
+        for i in range(message_id - 1, 2, -1):
             await bot.delete_message(chat_id=chat_id, message_id=i)
     except:
         pass
@@ -185,15 +170,7 @@ async def adress(message: Message, state: FSMContext):
 
 @dp.callback_query_handler(text='submit', state=new_User.Confirm)
 async def submit_the_info(call: CallbackQuery, state: FSMContext):
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
-
+    await call.message.delete()
     await call.answer(
         "The profile has been updated",
         cache_time=60, show_alert=True
@@ -219,14 +196,7 @@ async def submit_the_info(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='cancel', state="*")
 async def cancel(call: CallbackQuery, state: FSMContext):
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
+    await call.message.delete()
     await call.answer(cache_time=60)
     photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
     await call.message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
@@ -241,14 +211,7 @@ async def cancel(call: CallbackQuery, state: FSMContext):
 
 @dp.callback_query_handler(text='return', state='*')
 async def back(call: CallbackQuery, state: FSMContext):
-    try:
-        await call.message.delete()
-        chat_id = call.message.chat.id
-        message_id = call.message.message_id
-        for i in range(message_id - 1, 100, -1):
-            await bot.delete_message(chat_id=chat_id, message_id=i)
-    except:
-        pass
+    await call.message.delete()
     photo_url = "https://hireology.com/wp-content/uploads/2017/08/38611898_m-1.jpg"
     await call.message.answer_photo(photo_url, caption='The master mode has been activated ✅: \n'
                                                        f'<b>Master ID : {call.from_user.id}</b>'

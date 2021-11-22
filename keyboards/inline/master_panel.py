@@ -39,6 +39,9 @@ def reject(customer_id):
             [
                 InlineKeyboardButton(text='Accept ✅', callback_data=f"accept#{customer_id}"),
                 InlineKeyboardButton(text='Reject ❌', callback_data=f'reject#{customer_id}'),
+            ],
+            [
+                InlineKeyboardButton(text="🔙 Back", callback_data="🔙 Back.")
             ]
         ]
     )

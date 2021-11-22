@@ -8,4 +8,5 @@ from . import settings_service
 from . import settings_masters
 from . import settings_car
 from . import settings_date
+from . import block_list
 from . import echo
