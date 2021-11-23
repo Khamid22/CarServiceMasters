@@ -150,7 +150,7 @@ class MySQLStorage:
         return list_of_days
 
     async def check_account(self, master_id):
-        check_user = bool(await self.check("select master_id from black_list where admin_id = %s", master_id))
+        check_user = bool(await self.check("select master_id from black_list where master_id = %s", master_id))
         return check_user
 
     async def black_list(self):

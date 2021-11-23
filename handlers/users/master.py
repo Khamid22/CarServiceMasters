@@ -5,7 +5,7 @@ from aiogram.types import CallbackQuery
 from aiogram.types import Message
 
 from keyboards.inline.master_panel import admin_menu, reject
-from loader import dp, Database as db, bot, dp2, bot2
+from loader import dp, Database as db, bot, dp2
 from states.Master import admin_panel
 
 

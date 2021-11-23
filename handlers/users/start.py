@@ -26,7 +26,6 @@ async def master(message: Message, state: FSMContext):
     is_banned = await db.check_account(message.from_user.id)
     if is_banned:
         await message.answer(f"Sorry your account has been banned")
-        await state.finish()
     elif not is_master:
         await message.answer(f"<b> 🚫 You are not fully registered yet!</b>\n"
                              f"    \n"
