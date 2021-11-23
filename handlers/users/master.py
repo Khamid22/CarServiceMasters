@@ -75,9 +75,9 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
     customer_id = call.data.split('#')[1]
     row = await db.get("select * from masters where admin_id=%s", customer_id)
     admin_name = row.get("full_name")
-    await dp2.bot.send_message(customer_id, f"You have been rejected by {admin_name}")
-    await call.message.edit_text(f"[{customer_id}] Customer has been rejected successfully")
-    await call.message.edit_text("Customer rejected successfully")
+    await dp2.bot.send_message(customer_id, f"You have been rejected by one of the masters, maybe something went "
+                                            f"wrong....")
+    await call.answer(f"[{customer_id}] Customer has been rejected successfully",cache_time=60, show_alert=True)
     await db.delete_customer(customer_id)
 
 
@@ -85,10 +85,14 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
 async def reject_customer(call: CallbackQuery, state: FSMContext):
     customer_id = call.data.split('#')[1]
     row = await db.get("select * from masters where admin_id=%s", customer_id)
+    admin_id = row.get("admin_id")
     admin_name = row.get("full_name")
-    await dp2.bot.send_message(customer_id, f"You have been successful accepted by {admin_name}")
-    await call.message.edit_text(f"[{customer_id}] Customer has been accepted successfully")
+    admin_location = row.get("Location")
+    await dp2.bot.send_message(customer_id, f"<i>You have been successful accepted by {admin_name} with the id: {admin_id}\n \n"
+                                            f"Location: {admin_location}")
+    await call.answer(f"[{customer_id}] Customer has been accepted successfully", cache_time=60, show_alert=True)
     await db.delete_customer(customer_id)
+    await db.apply("insert into ")
 
 
 @dp.callback_query_handler(text='🔙 Back.', state=admin_panel.mainmenu)
