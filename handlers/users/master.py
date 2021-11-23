@@ -92,7 +92,6 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
                                             f"Location: {admin_location}")
     await call.answer(f"[{customer_id}] Customer has been accepted successfully", cache_time=60, show_alert=True)
     await db.delete_customer(customer_id)
-    await db.apply("insert into ")
 
 
 @dp.callback_query_handler(text='🔙 Back.', state=admin_panel.mainmenu)
