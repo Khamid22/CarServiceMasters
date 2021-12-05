@@ -10,7 +10,7 @@ from states.Master import admin_panel
 
 
 # Checks the incoming messages and compares
-from car_service_master.keyboards.inline.master_panel import get_back
+from keyboards.inline.master_panel import get_back
 
 
 @dp.message_handler(state=admin_panel.secret_key)
