@@ -8,4 +8,4 @@ storage = MemoryStorage()
 dp = Dispatcher(bot, storage=storage)
 dp2 = Dispatcher(bot2, storage=storage)
 
-Database: MySQLStorage = MySQLStorage("car_service", user='turin', password='qwerty12')
+Database: MySQLStorage = MySQLStorage("test", user='new', password='12345678')

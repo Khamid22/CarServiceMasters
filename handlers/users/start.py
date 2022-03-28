@@ -1,5 +1,4 @@
 from aiogram.dispatcher.filters.builtin import CommandStart
-
 from aiogram.dispatcher import FSMContext
 from aiogram.types import Message
 from data.config import ADMINS
@@ -29,7 +28,7 @@ async def master(message: Message, state: FSMContext):
     elif not is_master:
         await message.answer(f"<b> 🚫 You are not fully registered yet!</b>\n"
                              f"    \n"
-                             f"<i>❗️Please for registration, send my your password "
+                             f"<i>❗️Please for registration, send me your password "
                              f"clarifying you as a car technician given by the admin!</i>"
                              f"\n     \n"
                              f"⁉️If you have not taken your password identification yet, please contact at @{admin.username}",

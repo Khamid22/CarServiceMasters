@@ -8,7 +8,6 @@ from keyboards.inline.master_panel import admin_menu, reject
 from loader import dp, Database as db, bot, dp2
 from states.Master import admin_panel
 
-
 # Checks the incoming messages and compares
 from keyboards.inline.master_panel import get_back
 
@@ -77,7 +76,7 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
     admin_name = row.get("full_name")
     await dp2.bot.send_message(customer_id, f"You have been rejected by one of the masters, maybe something went "
                                             f"wrong....")
-    await call.answer(f"[{customer_id}] Customer has been rejected successfully",cache_time=60, show_alert=True)
+    await call.answer(f"[{customer_id}] Customer has been rejected successfully", cache_time=60, show_alert=True)
     await db.delete_customer(customer_id)
 
 
@@ -88,8 +87,9 @@ async def reject_customer(call: CallbackQuery, state: FSMContext):
     admin_id = row.get("admin_id")
     admin_name = row.get("full_name")
     admin_location = row.get("Location")
-    await dp2.bot.send_message(customer_id, f"<i>You have been successful accepted by {admin_name} with the id: {admin_id}\n \n"
-                                            f"Location: {admin_location}")
+    await dp2.bot.send_message(customer_id,
+                               f"<i>You have been successful accepted by {admin_name} with the id: {admin_id}\n \n"
+                               f"Location: {admin_location}")
     await call.answer(f"[{customer_id}] Customer has been accepted successfully", cache_time=60, show_alert=True)
     await db.delete_customer(customer_id)
 
